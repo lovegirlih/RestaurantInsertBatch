@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  batch:
+    jdbc:
+      initialize-schema: always  # Spring Batch가 기본 스키마를 자동으로 설정
+  sql:
+    init:
+      schema-locations: classpath:org/springframework/batch/core/schema-h2.sql
+      platform: h2
