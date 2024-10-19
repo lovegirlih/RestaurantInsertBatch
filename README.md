@@ -1,15 +1,29 @@
-# RestaurantInsertBatch
-데이터 베이스 DDL
+# RestaurantDataInsertBatch
+대용량 Data를 DB에(무결성 보장) 입력하는 어플리케이션을 구현합니다.
 
+## 목차
+1. [요구사항](#요구사항)
+2. [실행 전 데이터베이스 DDL](#데이터 베이스 DDL)
+3. [설치 방법](#설치-방법)
+
+## 요구사항
+* 배치어플리케이션으로 CSV 파일을 읽어 데이터베이스(MySQL)에 CSV의 데이터를 열을 구분하여 저장합니다.
+* 배치 작업의 진행상황과 발생한 오류를 추적할 수 있도록 로깅합니다.
+* 배치의 기능을 검증하기 위해 단위테스트를 작성합니다.
+
+## 데이터 베이스 DDL
 로컬환경에 mysql을 설치 하신 후 root 권한으로 실행 부탁드립니다.
 혹시 mysql이 설치되어있지 않다면 OS에 따르게 적절하게 설치 부탁드립니다.
-
-// 스키마 추가
+---
+1. 스키마 추가
+```sql
 CREATE DATABASE my_database;
-
-// 테이블 추가
+```
+---
+2. 테이블 추가
+```sql
 CREATE TABLE restaurant_standard_data (
-seq BIGINT AUTO_INCREMENT PRIMARY KEY, -- 고유 ID, 자동증가
+id BIGINT AUTO_INCREMENT PRIMARY KEY, -- 고유 ID, 자동증가
 service_name VARCHAR(50) NOT NULL, -- 서비스 명칭 (NULL 불가)
 service_id VARCHAR(20) NOT NULL, -- 서비스 ID (NULL 불가)
 municipality_code VARCHAR(10) NOT NULL, -- 자치단체 코드 (NULL 불가)
@@ -57,6 +71,11 @@ traditional_code VARCHAR(50) NULL, -- 전통 업소 지정 번호
 main_food VARCHAR(100) NULL, -- 전통 업소 주된 음식
 website VARCHAR(255) NULL -- 홈페이지 주소
 );
+```
 
-설정 및 실행가이드
-
+## 설치 및 실행 가이드
+1. git clone을 합니다. (public으로 설정했습니다.)
+   (https://github.com/lovegirlih/RestaurantInsertBatch.git)
+2. resurces/application.yaml에 file:excel-path:에 내 로컬 환경에 존재하는 excel파일의 경로를 설정합니다.
+3. RestaurantInsertBatch파일의 main을 실행합니다.
+4. 문의사항은 010-8783-0421로 부탁드립니다!

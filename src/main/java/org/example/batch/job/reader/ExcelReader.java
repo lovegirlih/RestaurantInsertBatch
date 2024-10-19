@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.example.batch.job.dto.RestaurantDataDto;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
@@ -21,6 +22,7 @@ public class ExcelReader implements ItemReader<RestaurantDataDto> {
 
   private Iterator<Row> rowIterator = null;
   private final Map<String, Integer> headerIndexMap = new HashMap<>();
+  private final FileConfig fileConfig;
 
   // 엑셀 헤더와 DTO 필드 이름 간의 매핑 설정 (엑셀 헤더로 한글을 셋팅해야함)
   private final Map<String, String> customHeaderMapping = Map.ofEntries(
@@ -72,11 +74,16 @@ public class ExcelReader implements ItemReader<RestaurantDataDto> {
     Map.entry("홈페이지", "website")
   );
 
+  @Autowired
+  public ExcelReader(FileConfig fileConfig) {
+    this.fileConfig = fileConfig;
+  }
+
   // 파일을 처음 읽을 때만 초기화
   private void initializeFile() throws Exception {
     if (rowIterator == null) {
       log.info("ExcelReader 파일 초기화");
-      Workbook workbook = WorkbookFactory.create(new FileInputStream("/Users/ibang/Desktop/test.xlsx"));
+      Workbook workbook = WorkbookFactory.create(new FileInputStream(fileConfig.getExcelPath()));
       Sheet sheet = workbook.getSheetAt(0);
       this.rowIterator = sheet.iterator();
       initializeHeaderIndexMap(this.rowIterator.next());  // 헤더 정보 매핑 초기화
